@@ -18,4 +18,6 @@ public class Fragment_User_Search extends Fragment {
         View view_user_search = inflater.inflate(R.layout.activity_fragment_user_search, container, false);
         return view_user_search;
     }
+
+
 }

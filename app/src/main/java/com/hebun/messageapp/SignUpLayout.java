@@ -21,4 +21,8 @@ public class SignUpLayout extends AppCompatActivity {
             return insets;
         });
     }
+
+    private void definitions () {
+
+    }
 }
