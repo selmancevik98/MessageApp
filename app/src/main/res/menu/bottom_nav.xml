@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/message_ic"
+        android:title="Message"
+        android:icon="@drawable/message_icon"/>
+
+    <item android:id="@+id/user_search_ic"
+        android:title="User search"
+        android:icon="@drawable/user_search_icon"/>
+
+</menu>

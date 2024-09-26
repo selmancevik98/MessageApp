@@ -15,11 +15,24 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginLayout extends AppCompatActivity {
     TextInputEditText login_mail_edittext, login_password_edittext;
     Button login_btn;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+
+    @Override
+    protected void onStart() {
+        user = auth.getCurrentUser();
+        if (user != null) {
+            Intent intent = new Intent(getApplicationContext(), HomePage.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        super.onStart();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
