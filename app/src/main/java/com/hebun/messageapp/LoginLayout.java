@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class LoginLayout extends AppCompatActivity {
     Button login_btn;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user;
+    TextView login_signuplayout_txt;
 
     @Override
     protected void onStart() {
@@ -48,6 +50,7 @@ public class LoginLayout extends AppCompatActivity {
     }
 
     private void definitions () {
+        login_signuplayout_txt = findViewById(R.id.login_signuplayout_txt);
         login_mail_edittext = findViewById(R.id.login_mail_edittext);
         login_password_edittext = findViewById(R.id.login_password_edittext);
         login_btn = findViewById(R.id.login_btn);
@@ -55,6 +58,14 @@ public class LoginLayout extends AppCompatActivity {
         String mail = login_mail_edittext.getText().toString();
         String password = login_password_edittext.getText().toString();
 
+        login_signuplayout_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SignUpLayout.class);
+                startActivity(intent);
+
+            }
+        });
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override

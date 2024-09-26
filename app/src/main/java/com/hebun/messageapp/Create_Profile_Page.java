@@ -52,7 +52,7 @@ public class Create_Profile_Page extends AppCompatActivity {
             public void onClick(View view) {
                 name = profile_create_name_edittext.getText().toString();
                 surname = profile_create_surname_edittext.getText().toString();
-                username = profile_create_surname_edittext.getText().toString();
+                username = profile_create_username_edittext.getText().toString();
 
                 if (!username.matches("")) {
                     Map<String, String> map = new HashMap<>();
