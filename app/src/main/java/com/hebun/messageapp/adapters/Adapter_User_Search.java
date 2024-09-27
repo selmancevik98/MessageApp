@@ -8,12 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hebun.messageapp.MessagePage;
+import com.hebun.messageapp.messages.MessagePage;
 import com.hebun.messageapp.R;
 import com.hebun.messageapp.models.Model_User_Search;
 
@@ -45,6 +44,8 @@ public class Adapter_User_Search extends RecyclerView.Adapter<Adapter_User_Searc
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, MessagePage.class);
+                intent.putExtra("user_name", searchList.get(position).getUsername());
+                intent.putExtra("user_id", searchList.get(position).getUser_id());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

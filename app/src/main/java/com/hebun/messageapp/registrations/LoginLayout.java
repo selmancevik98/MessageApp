@@ -1,4 +1,4 @@
-package com.hebun.messageapp;
+package com.hebun.messageapp.registrations;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.hebun.messageapp.HomePage;
+import com.hebun.messageapp.R;
 
 public class LoginLayout extends AppCompatActivity {
     TextInputEditText login_mail_edittext, login_password_edittext;
