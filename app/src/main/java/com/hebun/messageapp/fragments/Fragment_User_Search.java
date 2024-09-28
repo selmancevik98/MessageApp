@@ -36,6 +36,7 @@ public class Fragment_User_Search extends Fragment {
     RecyclerView rv_user_search;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
