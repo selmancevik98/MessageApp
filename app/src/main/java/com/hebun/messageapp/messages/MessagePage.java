@@ -88,6 +88,5 @@ public class MessagePage extends AppCompatActivity {
         map.put("date", date);
         map.put("time", time);
 
-        reference.child("messages").setValue(map);
     }
 }
