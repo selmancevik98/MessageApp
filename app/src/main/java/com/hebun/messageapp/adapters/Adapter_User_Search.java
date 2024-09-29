@@ -12,6 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hebun.messageapp.messages.MessagePage;
 import com.hebun.messageapp.R;
 import com.hebun.messageapp.models.Model_User_Search;
@@ -23,6 +30,10 @@ public class Adapter_User_Search extends RecyclerView.Adapter<Adapter_User_Searc
     List<Model_User_Search> searchList;
     Context context;
     Activity activity;
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    Boolean roomc = false;
+    String room_id = "";
 
     public Adapter_User_Search(List<Model_User_Search> searchList, Context context, Activity activity) {
         this.searchList = searchList;
@@ -43,11 +54,20 @@ public class Adapter_User_Search extends RecyclerView.Adapter<Adapter_User_Searc
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Boolean roomcnt = roomcontrol(searchList.get(position).getUser_id());
+
                 Intent intent = new Intent(context, MessagePage.class);
+                if (roomcnt) {
+                    intent.putExtra("room_id", room_id);
+                } else {
+                    intent.putExtra("room_id", "");
+                }
                 intent.putExtra("user_name", searchList.get(position).getUsername());
                 intent.putExtra("user_id", searchList.get(position).getUser_id());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
         });
     }
@@ -65,4 +85,23 @@ public class Adapter_User_Search extends RecyclerView.Adapter<Adapter_User_Searc
             user_name_text = itemView.findViewById(R.id.user_name_text);
         }
     }
+
+    private boolean roomcontrol(String user_id) {
+        reference.child("users").child(user.getUid()).child("chatkeys").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    roomc = true;
+                    room_id = snapshot.getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return roomc;
+    }
+
 }

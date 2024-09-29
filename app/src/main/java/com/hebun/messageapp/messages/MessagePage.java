@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hebun.messageapp.R;
 import com.hebun.messageapp.models.DateTimeManager;
 
@@ -30,7 +34,7 @@ import java.util.Map;
 
 public class MessagePage extends AppCompatActivity {
     List<MessageModel> list_message = new ArrayList<>();
-    String user_name, user_id;
+    String user_name, user_id, room_id;
     TextView msg_user_name;
     RecyclerView msg_rv_messages;
     EditText msg_messagetxt_edittext;
@@ -38,6 +42,7 @@ public class MessagePage extends AppCompatActivity {
     Adapter_Messages adapterMessages;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -54,9 +59,14 @@ public class MessagePage extends AppCompatActivity {
         Intent intent = getIntent();
         user_name = intent.getStringExtra("user_name");
         user_id = intent.getStringExtra("user_id");
+        room_id = intent.getStringExtra("room_id");
+        if (room_id.matches("")) {
+            room_id = reference.child("messages").push().toString();
+        }
         definitions();
 
     }
+
 
     private void definitions() {
         msg_user_name = findViewById(R.id.msg_user_name);
@@ -88,5 +98,6 @@ public class MessagePage extends AppCompatActivity {
         map.put("date", date);
         map.put("time", time);
 
+        reference.child("messages").child(room_id).push().setValue(map);
     }
 }
