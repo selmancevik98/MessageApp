@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class Adapter_Chats extends RecyclerView.Adapter<Adapter_Chats.ViewHolderC> {
 
+
     @NonNull
     @Override
     public ViewHolderC onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

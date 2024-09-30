@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,9 +41,12 @@ public class Adapter_Messages extends RecyclerView.Adapter<Adapter_Messages.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolderMSG holder, int position) {
         if (list_message.get(position).getFrom().matches(user.getUid())) {
+            holder.right_chat_view.setVisibility(View.VISIBLE);
             holder.right_time_text_view.setText(list_message.get(position).getTime());
             holder.right_chat_text_view.setText(list_message.get(position).getText());
+
         } else {
+            holder.left_chat_view.setVisibility(View.VISIBLE);
             holder.left_time_text_view.setText(list_message.get(position).getTime());
             holder.left_username_text_view.setText("");
             holder.left_chat_text_view.setText(list_message.get(position).getText());
@@ -56,6 +60,7 @@ public class Adapter_Messages extends RecyclerView.Adapter<Adapter_Messages.View
 
     public static class ViewHolderMSG extends RecyclerView.ViewHolder {
         TextView left_username_text_view, left_chat_text_view, left_time_text_view, right_chat_text_view, right_time_text_view;
+        LinearLayout left_chat_view, right_chat_view;
         public ViewHolderMSG(@NonNull View itemView) {
             super(itemView);
             left_chat_text_view = itemView.findViewById(R.id.left_chat_text_view);
@@ -63,6 +68,8 @@ public class Adapter_Messages extends RecyclerView.Adapter<Adapter_Messages.View
             left_time_text_view = itemView.findViewById(R.id.left_time_text_view);
             right_chat_text_view = itemView.findViewById(R.id.right_chat_text_view);
             right_time_text_view = itemView.findViewById(R.id.right_time_text_view);
+            left_chat_view = itemView.findViewById(R.id.left_chat_view);
+            right_chat_view = itemView.findViewById(R.id.right_chat_view);
         }
     }
 }

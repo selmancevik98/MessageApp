@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,8 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +45,7 @@ public class MessagePage extends AppCompatActivity {
     Adapter_Messages adapterMessages;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    int msg_count;
 
 
     @SuppressLint("MissingInflatedId")
@@ -61,10 +65,10 @@ public class MessagePage extends AppCompatActivity {
         user_id = intent.getStringExtra("user_id");
         room_id = intent.getStringExtra("room_id");
         if (room_id.matches("")) {
-            room_id = reference.child("messages").push().toString();
+            room_id = reference.child("messages").push().getKey().toString();
         }
         definitions();
-
+        get_message();
     }
 
 
@@ -98,6 +102,51 @@ public class MessagePage extends AppCompatActivity {
         map.put("date", date);
         map.put("time", time);
 
-        reference.child("messages").child(room_id).push().setValue(map);
+        reference.child("messages").child(room_id).push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                msg_messagetxt_edittext.setText(null);
+                msg_count++;
+                room_id_save();
+            }
+        });
+    }
+
+    private void get_message() {
+        reference.child("messages").child(room_id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                MessageModel messageModel = snapshot.getValue(MessageModel.class);
+                list_message.add(messageModel);
+                adapterMessages.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void room_id_save() {
+        if (msg_count == 1) {
+            reference.child("users").child(user.getUid()).child("chatkeys").child(user_id).setValue(room_id);
+            reference.child("users").child(user_id).child("chatkeys").child(user.getUid()).setValue(room_id);
+        }
     }
 }
