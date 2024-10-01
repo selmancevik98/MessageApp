@@ -78,6 +78,8 @@ public class MessagePage extends AppCompatActivity {
         msg_messagetxt_edittext = findViewById(R.id.msg_messagetxt_edittext);
         msg_send_btn = findViewById(R.id.msg_send_btn);
 
+        msg_user_name.setText(user_name);
+
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getApplicationContext());
         msg_rv_messages.setLayoutManager(manager);
         adapterMessages = new Adapter_Messages(list_message, user_name, getApplicationContext(), getParent());
