@@ -88,13 +88,15 @@ public class MessagePage extends AppCompatActivity {
         msg_send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                msg_send();
+                String text = msg_messagetxt_edittext.getText().toString();
+                if (!text.isEmpty()) {
+                    msg_send(text);
+                }
             }
         });
     }
 
-    private void msg_send() {
-        String text = msg_messagetxt_edittext.getText().toString();
+    private void msg_send(String text) {
         String date = DateTimeManager.getCurrentDate();
         String time = DateTimeManager.getCurrentTime();
 
